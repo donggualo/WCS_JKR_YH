@@ -34,6 +34,14 @@
         public const string FerryAvoidNumber = nameof(FerryAvoidNumber);
 
         public static string EnableMoveCarDiagnose = nameof(EnableMoveCarDiagnose);   //开关-启用移车分析服务
+
+
+        #region[流程超时]
+
+        public static string StepOverTime = nameof(StepOverTime);               //除【倒库中】，其他流程的超时时间（秒）
+        public static string SortingStockStepOverTime = nameof(SortingStockStepOverTime);               //倒库中流程的超时时间（秒）
+
+        #endregion
     }
 
     public static class DicSwitchTag

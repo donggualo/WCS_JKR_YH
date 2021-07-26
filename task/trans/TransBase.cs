@@ -1,4 +1,5 @@
 ﻿using enums;
+using enums.warning;
 using module.goods;
 using module.msg;
 using resource;
@@ -93,6 +94,12 @@ namespace task.trans
                         for (int i = 0; i < TransList.Count; i++)
                         {
                             StockTrans trans = TransList[i];
+
+                            #region[流程超时报警 - 默认超时10分钟则报警，倒库中流程则要2小时才报警]
+
+                            PubTask.Trans.CheckAndAddTransStatusOverTimeWarn(trans);
+
+                            #endregion
                             switch (trans.TransType)
                             {
                                 case TransTypeE.入库:
@@ -564,5 +571,34 @@ namespace task.trans
 
         #endregion
 
+        /// <summary>
+        /// 判断是否需要加入流程超时报警
+        /// 1.超时则添加报警Warning36
+        /// 2.没超时则删除报警
+        /// </summary>
+        /// <param name="trans"></param>
+        public void CheckAndAddTransStatusOverTimeWarn(StockTrans trans)
+        {
+            int overtime = PubMaster.Dic.GetDtlIntCode(DicTag.StepOverTime);
+            // 倒库中的流程超时2小时，才报警
+            if (trans.TransStaus == TransStatusE.倒库中)
+            {
+                overtime = PubMaster.Dic.GetDtlIntCode(DicTag.SortingStockStepOverTime);
+                if (trans.IsInStatusOverTime(trans.TransStaus, overtime))
+                {
+                    PubMaster.Warn.AddTaskWarn(trans.area_id, WarningTypeE.Warning36, 0, trans.id,
+                        string.Format("{0}[ {1} ]-[ {2} ]流程已超过2小时，请检查任务相关的设备是否正常", trans.TransType, trans.id, trans.TransStaus));
+                    return;
+                }
+            }
+            //流程超过10分钟，就报警
+            else if (trans.IsInStatusOverTime(trans.TransStaus, overtime))
+            {
+                PubMaster.Warn.AddTaskWarn(trans.area_id, WarningTypeE.Warning36, 0, trans.id,
+                    string.Format("{0}[ {1} ]-[ {2} ]流程已超过10分钟，请检查任务相关的设备是否正常", trans.TransType, trans.id, trans.TransStaus));
+                return;
+            }
+            PubMaster.Warn.RemoveTaskWarn(WarningTypeE.Warning36, trans.id);
+        }
     }
 }

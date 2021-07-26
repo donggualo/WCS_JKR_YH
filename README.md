@@ -108,7 +108,7 @@ NULL, b'0', '请检查轨道是否提前满砖了', NULL, NULL, NULL, NULL);
 
 
 
-# **[2020-10-18 : 提前满砖警告]**
+# **[2021-07-20: 报警灯逻辑]**
 
 ## 报警添加线路字段，等级字段
 
@@ -122,3 +122,13 @@ ALTER TABLE `warning` ADD COLUMN `level` TINYINT(3) UNSIGNED NULL COMMENT '等�
 ALTER TABLE `diction_dtl` ADD COLUMN `level` tinyint(3) UNSIGNED NULL COMMENT '等级';
 ```
 
+# **[2021-07-26:添加流程报警信息]**
+
+## 添加字典
+```mysql
+INSERT INTO `diction_dtl`(`id`, `diction_id`, `code`, `name`, `int_value`, `bool_value`, `string_value`, `double_value`, `uint_value`, `order`, `updatetime`, `level`) VALUES (100, 3, 'Warning36', '【流程超时】', NULL, NULL, '【流程超时】', NULL, NULL, NULL, NULL, 3);
+
+INSERT INTO `diction_dtl`(`id`, `diction_id`, `code`, `name`, `int_value`, `bool_value`, `string_value`, `double_value`, `uint_value`, `order`, `updatetime`, `level`) VALUES (101, 4, 'StepOverTime', '除【倒库中】，其他流程的超时时间（秒）', 600, NULL, NULL, NULL, NULL, NULL, '2021-06-30 08:44:37', 3);
+
+INSERT INTO `diction_dtl`(`id`, `diction_id`, `code`, `name`, `int_value`, `bool_value`, `string_value`, `double_value`, `uint_value`, `order`, `updatetime`, `level`) VALUES (102, 4, 'SortingStockStepOverTime', '倒库中流程的超时时间（秒）', 7200, NULL, NULL, NULL, NULL, NULL, NULL, 3);
+```

@@ -190,29 +190,49 @@ namespace task
 
         #region[任务警告]
 
-        public void AddTaskWarn(WarningTypeE warntype, ushort devid, uint transid = 0)
+        public void AddTaskWarn(uint areaid, WarningTypeE warntype, ushort devid, uint transid = 0, string result = "")
         {
-            Warning warn = List.Find(c => c.type == (byte)warntype && c.dev_id == devid && !c.resolve);
+            Warning warn = List.Find(c => c.type == (byte)warntype && c.dev_id == devid && c.trans_id == transid && !c.resolve);
             if (warn == null)
             {
                 if (stopwarnadding) return;
                 if ((DateTime.Now - inittime).TotalSeconds < 20) return;
                 warn = new Warning()
                 {
+                    area_id = (ushort)areaid,
                     dev_id = devid,
                     type = (byte)warntype,
                     trans_id = transid
                 };
                 string devname = PubMaster.Device.GetDeviceName(devid);
-                warn.area_id = (ushort)PubMaster.Device.GetDeviceArea(devid);
+                //warn.area_id = (ushort)PubMaster.Device.GetDeviceArea(devid);
                 string warnmsg = PubMaster.Dic.GetDtlStrCode(warntype.ToString(), out byte level);
-                warn.content = devname + ": " + warnmsg;
+                if (devid != 0)
+                {
+                    warn.content = devname + ": " + warnmsg + " > " + result;
+                }
+                else
+                {
+                    warn.content = "任务[" + transid + "] : " + warnmsg + " > " + result;
+                }
                 warn.level = level;
                 AddWaring(warn);
             }
         }
 
 
+        /// <summary>
+        /// 清除任务报警
+        /// </summary>
+        /// <param name="transid"></param>
+        public void RemoveTaskWarn(WarningTypeE warntype, uint transid)
+        {
+            Warning warn = List.Find(c => c.type == (byte)warntype && c.trans_id == transid && !c.resolve);
+            if (warn != null)
+            {
+                RemoveWarning(warn);
+            }
+        }
         #endregion
 
         #region[轨道警告]
