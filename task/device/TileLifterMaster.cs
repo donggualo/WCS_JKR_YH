@@ -676,10 +676,10 @@ namespace task.device
                                 {
                                     case DevWorkTypeE.规格作业:
                                         TileAddInTransTask(task.AreaId, task.ID, task.LeftTrackId, gid, task.FullQty);
-                                        break;
+                                        return;
                                     case DevWorkTypeE.轨道作业:
 
-                                        break;
+                                        return;
                                 }
 
                                 #region[旧-逻辑]
@@ -763,10 +763,10 @@ namespace task.device
                         {
                             case DevWorkTypeE.规格作业:
                                 TileAddOutTransTask(task.AreaId, task.ID, task.LeftTrackId, task.GoodsId);
-                                break;
+                                return;
                             case DevWorkTypeE.轨道作业:
                                 TileAddTrackOutTransTask(task.AreaId, task.ID, task.LeftTrackId, task.GoodsId);
-                                break;
+                                return;
                         }
 
                         #region[旧-逻辑]
@@ -922,10 +922,10 @@ namespace task.device
                         {
                             case DevWorkTypeE.规格作业:
                                 TileAddInTransTask(task.AreaId, task.ID, task.RigthTrackId, gid, task.FullQty);
-                                break;
+                                return;
                             case DevWorkTypeE.轨道作业:
 
-                                break;
+                                return;
                         }
 
                         #region[旧-逻辑]
@@ -1002,10 +1002,10 @@ namespace task.device
                         {
                             case DevWorkTypeE.规格作业:
                                 TileAddOutTransTask(task.AreaId, task.ID, task.RigthTrackId, task.GoodsId);
-                                break;
+                                return;
                             case DevWorkTypeE.轨道作业:
                                 TileAddTrackOutTransTask(task.AreaId, task.ID, task.RigthTrackId, task.GoodsId);
-                                break;
+                                return;
                         }
 
                         #region[旧-逻辑]
