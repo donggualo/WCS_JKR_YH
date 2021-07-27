@@ -85,6 +85,10 @@ namespace wcs.ViewModel
                     case 1://取消任务
                         PubMaster.Warn.RemoveWarning(SelectedWarn.ID);
                         break;
+
+                    case 2://静音（降级）
+                        PubMaster.Warn.DownLevelWarning(SelectedWarn.ID);
+                        break;
                 }
             }
         }
